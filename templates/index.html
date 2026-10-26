@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Peluang Target Profit Supermarket | Monte Carlo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head><body>
+<header><h1>Seberapa besar peluang cabang ini mencapai target profit bulan depan?</h1>
+<p>Simulasi Monte Carlo dari data 1.000 transaksi Supermarket Sales. Setiap skenario adalah satu bulan penuh transaksi.</p></header>
+<main>
+<section class="ctrl" aria-label="Pengaturan simulasi">
+ <fieldset><legend>Cabang</legend><div class="seg" id="branch">{% for b in branches %}<button data-v="{{b}}" class="{{'on' if loop.first}}">{{b}}</button>{% endfor %}</div></fieldset>
+ <fieldset><legend>Asumsi distribusi</legend><div class="seg" id="dist"><button data-v="Uniform" class="on">Uniform</button><button data-v="Normal">Normal</button><button data-v="Both">Bandingkan</button></div></fieldset>
+ <fieldset><legend>Target profit bulanan</legend>
+  <label class="rng"><input type="range" id="pct" min="80" max="120" step="1" value="100"><output id="pctv"></output></label>
+  <p class="hint" id="tgt"></p></fieldset>
+ <fieldset><legend>Jumlah skenario</legend><div class="seg" id="n"><button data-v="5000">5.000</button><button data-v="10000" class="on">10.000</button><button data-v="30000">30.000</button></div></fieldset>
+ <p class="hint" id="meta"></p>
+</section>
+<section class="out" aria-live="polite">
+ <div id="tags"></div>
+ <div class="chartbox"><canvas id="chart" role="img" aria-label="Histogram profit bulanan hasil simulasi"></canvas></div>
+ <table id="stats"><thead><tr><th>Distribusi</th><th>Rata-rata profit</th><th>Simpangan baku</th><th>Peluang ≥ target</th></tr></thead><tbody></tbody></table>
+ <p class="note" id="note"></p>
+</section>
+</main>
+<footer>Pemodelan dan Simulasi · TA-03 · Profit = Unit price × Quantity × 5%, sesuai kolom gross income pada dataset.</footer>
+<script>window.INFO={{ info|tojson }};</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body></html>
